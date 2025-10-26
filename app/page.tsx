@@ -309,7 +309,7 @@ export default function Home() {
         <table className="border-2 border-gray-300 bg-white rounded">
           <tbody>
             <tr>
-              <td className="px-20 py-16 text-center border border-gray-300 text-4xl font-bold">
+              <td className="px-20 py-16 text-center border border-gray-300 text-9xl font-bold">
                 {currentWord.word}
               </td>
             </tr>
@@ -323,7 +323,7 @@ export default function Home() {
           <tbody>
             <tr>
               <td 
-                className="px-6 py-4 text-center border border-gray-300 cursor-pointer hover:bg-gray-100 transition-colors"
+                className="px-6 py-4 text-center border border-gray-300 text-3xl cursor-pointer hover:bg-gray-100 transition-colors"
                 onClick={() => handleFieldEdit('phonetic')}
                 title="点击编辑音标"
               >
@@ -332,7 +332,7 @@ export default function Home() {
             </tr>
             <tr>
               <td 
-                className="px-6 py-4 text-center border border-gray-300 cursor-pointer hover:bg-gray-100 transition-colors"
+                className="px-6 py-4 text-center border border-gray-300 text-3xl cursor-pointer hover:bg-gray-100 transition-colors"
                 onClick={() => handleFieldEdit('partOfSpeech')}
                 title="点击编辑词性"
               >
@@ -341,7 +341,7 @@ export default function Home() {
             </tr>
             <tr>
               <td 
-                className="px-6 py-4 text-center border border-gray-300 text-4xl font-semibold cursor-pointer hover:bg-gray-100 transition-colors"
+                className="px-6 py-4 text-center border border-gray-300 text-8xl font-semibold cursor-pointer hover:bg-gray-100 transition-colors"
                 onClick={() => handleFieldEdit('meaning')}
                 title="点击编辑含义"
               >
@@ -350,7 +350,7 @@ export default function Home() {
             </tr>
             <tr>
               <td 
-                className="px-6 py-4 text-center border border-gray-300 cursor-pointer hover:bg-gray-100 transition-colors"
+                className="px-6 py-4 text-center border border-gray-300 cursor-pointer text-3xl hover:bg-gray-100 transition-colors"
                 onClick={() => handleFieldEdit('mnemonic')}
                 title="点击编辑助记"
               >
@@ -400,7 +400,7 @@ export default function Home() {
         <div className="flex-1"></div>
         
         {/* 中间进度区域 */}
-        <div className="text-center text-sm font-medium text-gray-700">
+        <div className="text-center text-3xl font-bold text-gray-700">
           {wordsData.length > 0 ? `${currentIndex + 1}/${wordsData.length}` : '0/0'} (未学会: {wordsData.filter(w => !w.isLearned).length})
         </div>
         
@@ -410,7 +410,7 @@ export default function Home() {
             <>
               <button
                 onClick={toggleFavoriteStatus}
-                className={`px-2 py-1 rounded text-xs shadow transition-colors ${
+                className={`px-2 py-1 rounded text-3xl shadow transition-colors ${
                   currentWord.isFavorited
                     ? 'bg-yellow-500 hover:bg-yellow-600 text-white'
                     : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
@@ -420,7 +420,7 @@ export default function Home() {
               </button>
               <button
                 onClick={toggleMasteredStatus}
-                className={`px-2 py-1 rounded text-xs shadow transition-colors ${
+                className={`px-2 py-1 rounded text-3xl shadow transition-colors ${
                   currentWord.isMastered
                     ? 'bg-orange-500 hover:bg-orange-600 text-white'
                     : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
