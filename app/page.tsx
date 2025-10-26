@@ -226,7 +226,9 @@ export default function Home() {
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target?.result as string;
-        const parsed = parseFileContent(content);
+        // 删除文件中的所有制表符
+        const contentWithoutTabs = content.replace(/\t/g, '');
+        const parsed = parseFileContent(contentWithoutTabs);
         setWordsData(parsed);
         // 找到第一个应该显示的单词
         const firstDisplayableIndex = parsed.findIndex(word => shouldShowInLoop(word));
