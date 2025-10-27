@@ -20,6 +20,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewState, setViewState] = useState<ViewState>('word');
   const [editingField, setEditingField] = useState<string | null>(null);
+  const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const parseFileContent = (content: string): WordData[] => {
@@ -45,9 +46,9 @@ export default function Home() {
     if (word.isMastered) {
       return false;
     }
-    // 如果收藏了，总是显示
+    // 如果收藏了，根据学习收藏设置决定是否显示
     if (word.isFavorited) {
-      return true;
+      return learnFavorites;
     }
     // 否则只显示未学会的
     return !word.isLearned;
@@ -196,6 +197,11 @@ export default function Home() {
         return updatedWords;
       });
     }
+  };
+
+  // 切换学习收藏状态
+  const toggleLearnFavorites = () => {
+    setLearnFavorites(!learnFavorites);
   };
 
   // 寻找下一个应该显示的单词索引
@@ -408,6 +414,16 @@ export default function Home() {
         <div className="flex-1 flex justify-end gap-2">
           {wordsData.length > 0 && currentWord && (
             <>
+              <button
+                onClick={toggleLearnFavorites}
+                className={`px-2 py-1 rounded text-3xl shadow transition-colors ${
+                  learnFavorites
+                    ? 'bg-blue-500 hover:bg-blue-600 text-white'
+                    : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                }`}
+              >
+                {learnFavorites ? '学习收藏' : '不学收藏'}
+              </button>
               <button
                 onClick={toggleFavoriteStatus}
                 className={`px-2 py-1 rounded text-3xl shadow transition-colors ${
