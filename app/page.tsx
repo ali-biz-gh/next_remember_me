@@ -46,12 +46,19 @@ export default function Home() {
     if (word.isMastered) {
       return false;
     }
-    // 如果收藏了，根据学习收藏设置决定是否显示
-    if (word.isFavorited) {
+    
+    // 未学会的单词总是要显示
+    if (!word.isLearned) {
+      return true;
+    }
+    
+    // 已学会但收藏的单词，根据学习收藏设置决定是否显示
+    if (word.isFavorited && word.isLearned) {
       return learnFavorites;
     }
-    // 否则只显示未学会的
-    return !word.isLearned;
+    
+    // 其他情况不显示
+    return false;
   };
 
   // 编辑字段
