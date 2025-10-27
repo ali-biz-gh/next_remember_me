@@ -414,7 +414,11 @@ export default function Home() {
         
         {/* 中间进度区域 */}
         <div className="text-center text-3xl font-bold text-gray-700">
-          {wordsData.length > 0 ? `${currentIndex + 1}/${wordsData.length}` : '0/0'} (未学会: {wordsData.filter(w => !w.isLearned).length})
+          {wordsData.length > 0 ? (
+            <>
+              {`${currentIndex + 1}/${wordsData.length} (${wordsData.slice(0, currentIndex + 1).filter(w => !w.isLearned).length}/${wordsData.filter(w => !w.isLearned).length})`}
+            </>
+          ) : '0/0'}
         </div>
         
         {/* 右侧按钮组 */}
