@@ -11,6 +11,7 @@ interface WordData {
   isLearned: boolean;
   isFavorited: boolean;
   isMastered: boolean;
+  association?: string; // 新增联想字段
 }
 
 type ViewState = 'word' | 'details' | 'status';
@@ -35,7 +36,8 @@ export default function Home() {
         mnemonic: parts[4] || '',
         isLearned: parts[5] === '1',
         isFavorited: parts[6] === '1',
-        isMastered: parts[7] === '1'
+        isMastered: parts[7] === '1',
+        association: parts[8] || '' // 解析第9个字段作为联想
       };
     });
   };
@@ -87,7 +89,8 @@ export default function Home() {
       phonetic: '音标',
       partOfSpeech: '词性',
       meaning: '含义',
-      mnemonic: '助记'
+      mnemonic: '助记',
+      association: '联想'
     };
     return labels[field as keyof typeof labels] || field;
   };
@@ -103,7 +106,8 @@ export default function Home() {
         word.mnemonic,
         word.isLearned ? '1' : '0',
         word.isFavorited ? '1' : '0',
-        word.isMastered ? '1' : '0'
+        word.isMastered ? '1' : '0',
+        word.association || '' // 添加联想字段
       ].join('|');
     }).join('\n');
   };
@@ -371,8 +375,20 @@ export default function Home() {
               </td>
             </tr>
             <tr>
-              <td className="px-6 py-4 text-center border border-gray-300">
-                联想：
+              <td 
+                className="px-6 py-4 text-center border border-gray-300 cursor-pointer hover:bg-gray-100 transition-colors"
+                onClick={() => handleFieldEdit('association')}
+                title="点击编辑联想"
+              >
+                {currentWord.association ? (
+                  <div className="mt-2 text-xl">
+                    {currentWord.association.split(';').map((line, index) => (
+                      <div key={index}>{line}</div>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-gray-400">点击添加联想</span>
+                )}
               </td>
             </tr>
           </tbody>
