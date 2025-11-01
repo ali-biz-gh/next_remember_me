@@ -432,7 +432,7 @@ export default function Home() {
         <div className="text-center text-3xl font-bold text-gray-700">
           {wordsData.length > 0 ? (
             <>
-              {`${currentIndex + 1}/${wordsData.length} (${wordsData.slice(0, currentIndex + 1).filter(w => !w.isLearned).length}/${wordsData.filter(w => !w.isLearned).length})`}
+              {`${currentIndex + 1}/${wordsData.length} 错(${wordsData.slice(0, currentIndex + 1).filter(w => !w.isLearned).length}/${wordsData.filter(w => !w.isLearned).length}) 藏[${wordsData.slice(0, currentIndex + 1).filter(w => w.isFavorited).length}/${wordsData.filter(w => w.isFavorited).length}]`}
             </>
           ) : '0/0'}
         </div>
