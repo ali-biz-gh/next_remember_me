@@ -98,16 +98,19 @@ export default function Home() {
   // 生成下载文件内容
   const generateFileContent = (): string => {
     return wordsData.map(word => {
+      // 清理字段中的换行符和回车符，避免导出时格式错乱
+      const cleanField = (field: string) => field.replace(/[\r\n]/g, ' ').trim();
+      
       return [
-        word.word,
-        word.phonetic,
-        word.partOfSpeech,
-        word.meaning,
-        word.mnemonic,
+        cleanField(word.word || ''),
+        cleanField(word.phonetic || ''),
+        cleanField(word.partOfSpeech || ''),
+        cleanField(word.meaning || ''),
+        cleanField(word.mnemonic || ''),
         word.isLearned ? '1' : '0',
         word.isFavorited ? '1' : '0',
         word.isMastered ? '1' : '0',
-        word.association || '' // 添加联想字段
+        cleanField(word.association || '') // 添加联想字段
       ].join('|');
     }).join('\n');
   };
@@ -422,6 +425,42 @@ export default function Home() {
         accept=".txt"
         className="hidden"
       />
+
+      {/* 左侧按钮 */}
+      <div className="fixed left-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-4">
+        <button
+          onClick={handleLeftArrow}
+          className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
+          title="上一个 (左键)"
+        >
+          ←
+        </button>
+        <button
+          onClick={toggleLearnedStatus}
+          className="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-full shadow-lg transition-colors text-xl"
+          title="切换学会状态 (上下键)"
+        >
+          ↕
+        </button>
+      </div>
+
+      {/* 右侧按钮 */}
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-4">
+        <button
+          onClick={handleRightArrow}
+          className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
+          title="下一个 (右键)"
+        >
+          →
+        </button>
+        <button
+          onClick={toggleLearnedStatus}
+          className="bg-purple-500 hover:bg-purple-600 text-white p-4 rounded-full shadow-lg transition-colors text-xl"
+          title="切换学会状态 (上下键)"
+        >
+          ↕
+        </button>
+      </div>
 
       {/* 顶部区域 - 进度和按钮 */}
       <div className="flex justify-between items-center pt-2 px-4">
