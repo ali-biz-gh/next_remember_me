@@ -431,9 +431,16 @@ export default function Home() {
         <button
           onClick={handleLeftArrow}
           className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
-          title="上一个 (左键)"
+          title="向前 (左键)"
         >
           ←
+        </button>
+        <button
+          onClick={handleRightArrow}
+          className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
+          title="向后 (右键)"
+        >
+          →
         </button>
         <button
           onClick={toggleLearnedStatus}
@@ -447,9 +454,16 @@ export default function Home() {
       {/* 右侧按钮 */}
       <div className="fixed right-4 top-1/2 transform -translate-y-1/2 flex flex-col gap-4">
         <button
+          onClick={handleLeftArrow}
+          className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
+          title="向前 (左键)"
+        >
+          ←
+        </button>
+        <button
           onClick={handleRightArrow}
           className="bg-gray-500 hover:bg-gray-600 text-white p-4 rounded-full shadow-lg transition-colors text-2xl"
-          title="下一个 (右键)"
+          title="向后 (右键)"
         >
           →
         </button>
