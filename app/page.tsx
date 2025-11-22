@@ -271,7 +271,7 @@ export default function Home() {
       setStudiedCount(prev => {
         const newCount = prev + 1;
         // 每学习10个单词就自动下载
-        if (newCount % 10 === 0) {
+        if (newCount % 30 === 0) {
           setTimeout(() => {
             handleDownload();
           }, 100);
