@@ -22,6 +22,7 @@ export default function Home() {
   const [viewState, setViewState] = useState<ViewState>('word');
   const [editingField, setEditingField] = useState<string | null>(null);
   const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
+  const [studiedCount, setStudiedCount] = useState(0); // 记录学习过的单词数量（包括学会和没学会）
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const parseFileContent = (content: string): WordData[] => {
@@ -266,6 +267,18 @@ export default function Home() {
     } else if (viewState === 'details') {
       setViewState('status');
     } else if (viewState === 'status') {
+      // 学习了一个单词，增加计数
+      setStudiedCount(prev => {
+        const newCount = prev + 1;
+        // 每学习10个单词就自动下载
+        if (newCount % 10 === 0) {
+          setTimeout(() => {
+            handleDownload();
+          }, 100);
+        }
+        return newCount;
+      });
+      
       // 切换到下一个应该显示的单词
       const nextIndex = findNextDisplayableIndex(currentIndex);
       setCurrentIndex(nextIndex);
