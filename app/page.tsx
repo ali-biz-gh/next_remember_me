@@ -24,6 +24,28 @@ export default function Home() {
   const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
   const [studiedCount, setStudiedCount] = useState(0); // 记录学习过的单词数量（包括学会和没学会）
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // 播放音频函数
+  const playAudio = (word: string) => {
+    // 检查 output2 文件夹中是否有对应的音频文件
+    const audioPath = `/output2/${word}.mp3`;
+    
+    // 停止当前播放的音频
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+    }
+
+    // 创建新的音频对象
+    const audio = new Audio(audioPath);
+    audioRef.current = audio;
+
+    // 播放音频，如果文件不存在会静默失败
+    audio.play().catch(() => {
+      // 音频文件不存在或播放失败，静默处理
+    });
+  };
 
   const parseFileContent = (content: string): WordData[] => {
     const lines = content.trim().split('\n');
@@ -182,8 +204,16 @@ export default function Home() {
     }
 
     // 跳转到指定索引（转换为0基础索引）
-    setCurrentIndex(targetIndex - 1);
+    const newIndex = targetIndex - 1;
+    setCurrentIndex(newIndex);
     setViewState('word');
+    
+    // 播放跳转后单词的音频
+    if (wordsData[newIndex]) {
+      setTimeout(() => {
+        playAudio(wordsData[newIndex].word);
+      }, 100);
+    }
   };
 
   // 切换收藏状态
@@ -254,8 +284,16 @@ export default function Home() {
         setWordsData(parsed);
         // 找到第一个应该显示的单词
         const firstDisplayableIndex = parsed.findIndex(word => shouldShowInLoop(word));
-        setCurrentIndex(firstDisplayableIndex >= 0 ? firstDisplayableIndex : 0);
+        const targetIndex = firstDisplayableIndex >= 0 ? firstDisplayableIndex : 0;
+        setCurrentIndex(targetIndex);
         setViewState('word');
+        
+        // 播放第一个单词的音频
+        if (parsed[targetIndex]) {
+          setTimeout(() => {
+            playAudio(parsed[targetIndex].word);
+          }, 100);
+        }
       };
       reader.readAsText(file);
     }
@@ -271,7 +309,7 @@ export default function Home() {
       setStudiedCount(prev => {
         const newCount = prev + 1;
         // 每学习10个单词就自动下载
-        if (newCount % 30 === 0) {
+        if (newCount % 10 === 0) {
           setTimeout(() => {
             handleDownload();
           }, 100);
@@ -283,6 +321,13 @@ export default function Home() {
       const nextIndex = findNextDisplayableIndex(currentIndex);
       setCurrentIndex(nextIndex);
       setViewState('word');
+      
+      // 只在进入第一阶段（显示单词）时播放音频
+      if (wordsData[nextIndex]) {
+        setTimeout(() => {
+          playAudio(wordsData[nextIndex].word);
+        }, 100);
+      }
     }
   };
 
@@ -291,6 +336,13 @@ export default function Home() {
       setViewState('details');
     } else if (viewState === 'details') {
       setViewState('word');
+      
+      // 从详情返回到单词视图时播放音频
+      if (wordsData[currentIndex]) {
+        setTimeout(() => {
+          playAudio(wordsData[currentIndex].word);
+        }, 100);
+      }
     } else if (viewState === 'word') {
       // 切换到上一个应该显示的单词的状态三
       const prevIndex = findPrevDisplayableIndex(currentIndex);
