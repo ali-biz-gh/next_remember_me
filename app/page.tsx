@@ -23,11 +23,16 @@ export default function Home() {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
   const [studiedCount, setStudiedCount] = useState(0); // 记录学习过的单词数量（包括学会和没学会）
+  const [audioEnabled, setAudioEnabled] = useState(true); // 音频播放总开关
+  const [backupInterval, setBackupInterval] = useState(10); // 备份间隔（每学习多少个单词备份一次）
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   // 播放音频函数
   const playAudio = (word: string) => {
+    // 检查音频开关
+    if (!audioEnabled) return;
+    
     // 检查 output2 文件夹中是否有对应的音频文件
     const audioPath = `/output2/${word}.mp3`;
     
@@ -308,8 +313,8 @@ export default function Home() {
       // 学习了一个单词，增加计数
       setStudiedCount(prev => {
         const newCount = prev + 1;
-        // 每学习10个单词就自动下载
-        if (newCount % 10 === 0) {
+        // 根据设置的间隔自动下载
+        if (newCount % backupInterval === 0) {
           setTimeout(() => {
             handleDownload();
           }, 100);
@@ -557,6 +562,38 @@ export default function Home() {
         
         {/* 右侧按钮组 */}
         <div className="flex-1 flex justify-end gap-2">
+          {/* 音频开关 */}
+          <button
+            onClick={() => setAudioEnabled(!audioEnabled)}
+            className={`px-2 py-1 rounded text-xl shadow transition-colors ${
+              audioEnabled
+                ? 'bg-green-500 hover:bg-green-600 text-white'
+                : 'bg-gray-400 hover:bg-gray-500 text-white'
+            }`}
+            title="音频播放开关"
+          >
+            🔊{audioEnabled ? 'ON' : 'OFF'}
+          </button>
+          
+          {/* 备份间隔设置 */}
+          <button
+            onClick={() => {
+              const input = prompt(`请输入备份间隔（每学习多少个单词自动备份）:`, String(backupInterval));
+              if (input !== null) {
+                const num = parseInt(input.trim());
+                if (!isNaN(num) && num > 0) {
+                  setBackupInterval(num);
+                } else {
+                  alert('请输入有效的正整数');
+                }
+              }
+            }}
+            className="bg-teal-500 hover:bg-teal-600 text-white px-2 py-1 rounded text-xl shadow transition-colors"
+            title="设置备份间隔"
+          >
+            💾{backupInterval}
+          </button>
+          
           {wordsData.length > 0 && currentWord && (
             <>
               <button
