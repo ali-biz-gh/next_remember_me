@@ -21,7 +21,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [viewState, setViewState] = useState<ViewState>('word');
   const [editingField, setEditingField] = useState<string | null>(null);
-  const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
+  const [learnFavorites, setLearnFavorites] = useState(false); // 控制是否学习收藏的单词
   const [studiedCount, setStudiedCount] = useState(0); // 记录学习过的单词数量（包括学会和没学会）
   const [audioEnabled, setAudioEnabled] = useState(true); // 音频播放总开关
   const [backupInterval, setBackupInterval] = useState(50); // 备份间隔（每学习多少个单词备份一次）
