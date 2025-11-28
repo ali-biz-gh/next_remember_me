@@ -24,7 +24,7 @@ export default function Home() {
   const [learnFavorites, setLearnFavorites] = useState(true); // 控制是否学习收藏的单词
   const [studiedCount, setStudiedCount] = useState(0); // 记录学习过的单词数量（包括学会和没学会）
   const [audioEnabled, setAudioEnabled] = useState(true); // 音频播放总开关
-  const [backupInterval, setBackupInterval] = useState(10); // 备份间隔（每学习多少个单词备份一次）
+  const [backupInterval, setBackupInterval] = useState(50); // 备份间隔（每学习多少个单词备份一次）
   const fileInputRef = useRef<HTMLInputElement>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -548,20 +548,8 @@ export default function Home() {
 
       {/* 顶部区域 - 进度和按钮 */}
       <div className="flex justify-between items-center pt-2 px-4">
-        {/* 左侧空白 */}
-        <div className="flex-1"></div>
-        
-        {/* 中间进度区域 */}
-        <div className="text-center text-3xl font-bold text-gray-700">
-          {wordsData.length > 0 ? (
-            <>
-              {`${currentIndex + 1}/${wordsData.length} 错(${wordsData.slice(0, currentIndex + 1).filter(w => !w.isLearned).length}/${wordsData.filter(w => !w.isLearned).length}) 藏[${wordsData.slice(0, currentIndex + 1).filter(w => w.isFavorited).length}/${wordsData.filter(w => w.isFavorited).length}]`}
-            </>
-          ) : '0/0'}
-        </div>
-        
-        {/* 右侧按钮组 */}
-        <div className="flex-1 flex justify-end gap-2">
+        {/* 左侧按钮组 */}
+        <div className="flex gap-2">
           {/* 音频开关 */}
           <button
             onClick={() => setAudioEnabled(!audioEnabled)}
@@ -593,7 +581,19 @@ export default function Home() {
           >
             💾{backupInterval}
           </button>
-          
+        </div>
+        
+        {/* 中间进度区域 */}
+        <div className="text-center text-3xl font-bold text-gray-700">
+          {wordsData.length > 0 ? (
+            <>
+              {`${currentIndex + 1}/${wordsData.length} 错(${wordsData.slice(0, currentIndex + 1).filter(w => !w.isLearned).length}/${wordsData.filter(w => !w.isLearned).length}) 藏[${wordsData.slice(0, currentIndex + 1).filter(w => w.isFavorited).length}/${wordsData.filter(w => w.isFavorited).length}]`}
+            </>
+          ) : '0/0'}
+        </div>
+        
+        {/* 右侧按钮组 */}
+        <div className="flex gap-2">
           {wordsData.length > 0 && currentWord && (
             <>
               <button
